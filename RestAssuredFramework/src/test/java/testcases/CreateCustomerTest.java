@@ -13,9 +13,11 @@ public class CreateCustomerTest {
 	@Test
 	public void getCustomerAPIWithValidSecretKey() {
 		
-		RestAssured.baseURI="https://api.stripe.com/";
+		RestAssured.baseURI="https://api.stripe.com";
+		RestAssured.basePath="/v1";
+		
 		Response response=given().auth().basic("sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
-		.get("v1/customers");
+		.get("/customers");
 
 		response.prettyPrint();
 		System.out.println(response.getStatusCode());
