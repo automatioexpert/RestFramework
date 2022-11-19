@@ -9,11 +9,14 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
 import io.restassured.RestAssured;
+import utilities.ExcelReader;
 
 public class TestBase {
 
 	public Properties config = new Properties();
 	private FileInputStream fis = null;
+	public static ExcelReader excel = new ExcelReader("./src/test/resources/excel/data.xlsx");
+	
 
 	@BeforeSuite
 	public void setUp() {

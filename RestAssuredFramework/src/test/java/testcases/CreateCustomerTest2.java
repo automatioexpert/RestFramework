@@ -3,20 +3,22 @@ package testcases;
 import static io.restassured.RestAssured.given;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import base.TestBase;
 import io.restassured.response.Response;
+import utilities.DataUtil;
+import utilities.ExcelReader;
 
-public class CreateCustomerTest2 extends TestBase{
+public class CreateCustomerTest2 extends TestBase {
 
-	@Test(priority = 0)
-	public void validateCreateCustomerAPIWithValidSecretKey() {
+	@Test(priority = 0,dataProvider = "getData",dataProviderClass = DataUtil.class)
+	public void validateCreateCustomerAPI(String name, String email, String description) {
 
-	//	RestAssured.baseURI = "https://api.stripe.com/";
-
-		Response response = given().auth().basic("sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
-				.formParam("email", "user3473@gnai.com").formParam("description", "user is added").post(config.getProperty("customerAPIEndPoint"));
+		System.out.println("validateCreateCustomerAPI " + name + " email: " + email + " description: " + description);
+		Response response = given().auth().basic("sk_test_4eC39HqLyjWDarjtT1zdp7dc", "").formParam("email", email)
+				.formParam("description", description).post(config.getProperty("customerAPIEndPoint"));
 
 		response.prettyPrint();
 
@@ -25,13 +27,15 @@ public class CreateCustomerTest2 extends TestBase{
 
 	}
 
-	@Test(priority = 1)
-	public void invalidateCreateCustomerAPIWithValidSecretKey() {
+	@Test(priority = 1,dataProvider = "getData",dataProviderClass = DataUtil.class)
+	public void invalidCreateCustomerAPI(String name, String email, String description) { 
+	{
 
-	//	RestAssured.baseURI = "https://api.stripe.com/";
+		// RestAssured.baseURI = "https://api.stripe.com/";
 
-		Response response = given().auth().basic("sk_test_4eC39HqLyjWDarjtT1zdp7dc", "")
-				.formParam("email", "user3473@gnai.com").formParam("description", "user is added").post(config.getProperty("customerAPIEndPoint"));
+		Response response = given().auth().basic("sk_test_4eC39HqLyjWDarjtT1zdp7dc3834", "")
+				.formParam("email", email).formParam("description", description)
+				.post(config.getProperty("customerAPIEndPoint"));
 
 		response.prettyPrint();
 
@@ -40,4 +44,32 @@ public class CreateCustomerTest2 extends TestBase{
 
 	}
 	
-}
+	/*
+
+	@DataProvider
+	public Object[][] getData() {
+		ExcelReader excel = new ExcelReader("./src/test/resources/excel/data.xlsx");
+
+		String sheetName = "validateCreateCustomerAPI";
+
+		int rows = excel.getRowCount(sheetName);
+		int cols = excel.getColumnCount(sheetName);
+
+		System.out.println("Total rows: " + rows + " columns: " + cols);
+
+		System.out.println(excel.getCellData(sheetName, 0, 2));
+
+		Object[][] data = new Object[rows - 1][cols];
+
+		for (int rowNum = 2; rowNum <= rows; rowNum++) {
+
+			for (int colNum = 0; colNum < cols; colNum++) {
+				data[rowNum - 2][colNum] = excel.getCellData(sheetName, colNum, rowNum);
+
+			}
+
+		}
+
+		return data;
+	} */
+}}
