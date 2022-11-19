@@ -2,6 +2,8 @@ package testcases;
 
 import static io.restassured.RestAssured.given;
 
+import java.util.Hashtable;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -14,11 +16,11 @@ import utilities.ExcelReader;
 public class CreateCustomerTest2 extends TestBase {
 
 	@Test(priority = 0,dataProvider = "getData",dataProviderClass = DataUtil.class)
-	public void validateCreateCustomerAPI(String name, String email, String description) {
+	public void validateCreateCustomerAPI(Hashtable<String, String> table) {
 
-		System.out.println("validateCreateCustomerAPI " + name + " email: " + email + " description: " + description);
-		Response response = given().auth().basic("sk_test_4eC39HqLyjWDarjtT1zdp7dc", "").formParam("email", email)
-				.formParam("description", description).post(config.getProperty("customerAPIEndPoint"));
+		System.out.println("validateCreateCustomerAPI " + table.get("name") + " email: " + table.get("email") + " description: " + table.get("description"));
+		Response response = given().auth().basic("sk_test_4eC39HqLyjWDarjtT1zdp7dc", "").formParam("email", table.get("email"))
+				.formParam("description", table.get("description")).post(config.getProperty("customerAPIEndPoint"));
 
 		response.prettyPrint();
 
@@ -27,7 +29,7 @@ public class CreateCustomerTest2 extends TestBase {
 
 	}
 
-	@Test(priority = 1,dataProvider = "getData",dataProviderClass = DataUtil.class)
+	//@Test(priority = 1,dataProvider = "getData",dataProviderClass = DataUtil.class)
 	public void invalidCreateCustomerAPI(String name, String email, String description) { 
 	{
 
